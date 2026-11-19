@@ -1,0 +1,4 @@
+{
+  "$comment": "Exceções aprovadas de segurança. Ver politica-de-excecoes.md. Campos obrigatórios: id, tool, reason, approvedBy, expires (AAAA-MM-DD), mitigation.",
+  "exceptions": []
+}

@@ -1,0 +1,57 @@
+{
+  "kind": "gate-selftest",
+  "status": "APROVADO",
+  "env": "local",
+  "at": "2026-11-19T19:29:09.850Z",
+  "checks": [
+    {
+      "name": "Erro de tipagem bloqueia typecheck",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "Código inseguro (eval) bloqueia lint",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "Teste unitário falhando bloqueia a suíte",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "Segredo exposto bloqueia gate de segurança (gitleaks)",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "Padrão inseguro bloqueia SAST (Semgrep)",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "Dependência com vulnerabilidade crítica bloqueia gate (npm audit simulado)",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "Tabela Supabase sem RLS bloqueia verificação",
+      "status": "APROVADO",
+      "detail": "código 1"
+    },
+    {
+      "name": "DAST recusa alvo externo não autorizado (sem enviar requisição)",
+      "status": "APROVADO",
+      "detail": "código 3"
+    },
+    {
+      "name": "Pipeline (verify:quick) bloqueia entrega com falha",
+      "status": "APROVADO",
+      "detail": "código 1"
+    }
+  ],
+  "findings": [],
+  "notes": [
+    "Cada cenário deve terminar com código ≠ 0 (falha detectada e entrega bloqueada)."
+  ]
+}

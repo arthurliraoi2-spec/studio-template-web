@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Tokens-base do template. Cada cliente redefine paleta e tipografia aqui. */
+:root {
+  --paper: #fbfaf7;
+  --ink: #161513;
+  --muted: #55524b;
+  --line: #d9d5cc;
+  --accent: #1f5eff;
+  --danger: #b42318;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #121110;
+    --ink: #f3f1ec;
+    --muted: #b3aea4;
+    --line: #36332e;
+    --accent: #7aa2ff;
+    --danger: #ff8a7a;
+  }
+}
+
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

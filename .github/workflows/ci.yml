@@ -1,0 +1,178 @@
+# Pipeline obrigatório de qualidade e segurança (MASTER SYSTEM §7–§9).
+# Roda em todo pull request e em push na branch principal. Também é chamado
+# pelo workflow de liberação (release.yml) antes de qualquer publicação.
+name: CI — qualidade e segurança
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24"
+  GITLEAKS_VERSION: "8.30.1"
+  OSV_SCANNER_VERSION: "2.7.0"
+  SEMGREP_VERSION: "1.186.0"
+
+jobs:
+  quality:
+    name: Qualidade (formatação, lint, tipos, unitários, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next
+          include-hidden-files: true
+          retention-days: 1
+
+  e2e:
+    name: E2E, responsividade, acessibilidade e visual
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: .next
+      - run: npx playwright install --with-deps chromium
+      # Linhas de base visuais são por SO. Enquanto tests/e2e/__screenshots__/linux não
+      # estiver versionado, as imagens são geradas e publicadas como artefato para revisão
+      # (ver docs/security/procedimentos.md#regressão-visual). Demais asserções bloqueiam sempre.
+      - name: Executar Playwright
+        run: |
+          if [ -d tests/e2e/__screenshots__/linux ]; then
+            npx playwright test
+          else
+            echo "::warning::Sem linha de base visual Linux — gerando para revisão."
+            npx playwright test --update-snapshots=missing
+          fi
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            tests/e2e/__screenshots__/linux
+          retention-days: 14
+
+  security:
+    name: Segurança (deps, SAST, segredos, Supabase)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # histórico completo para o gitleaks
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm ci
+      - name: Instalar ferramentas (versões fixas)
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.local/bin"
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C "$HOME/.local/bin" gitleaks
+          curl -sSfL -o "$HOME/.local/bin/osv-scanner" \
+            "https://github.com/google/osv-scanner/releases/download/v${OSV_SCANNER_VERSION}/osv-scanner_linux_amd64"
+          chmod +x "$HOME/.local/bin/osv-scanner"
+          pip install "semgrep==${SEMGREP_VERSION}"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Gate de segurança
+        run: npm run security
+      - name: Autoteste dos gates (falhas controladas devem bloquear)
+        run: npm run gate:selftest
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-reports
+          path: docs/security/reports
+          retention-days: 90
+
+  dast:
+    name: DAST local (app rodando no próprio runner)
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: .next
+      - name: Subir servidor de produção local
+        run: |
+          npx next start -p 3200 -H 127.0.0.1 &
+          for i in $(seq 1 60); do curl -sf http://127.0.0.1:3200/api/health && break; sleep 1; done
+      - name: DAST do projeto (não destrutivo)
+        run: npm run dast
+        env:
+          DAST_TARGET: http://127.0.0.1:3200
+      - name: OWASP ZAP baseline (passivo, somente localhost)
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: http://127.0.0.1:3200
+          rules_file_name: .zap/rules.tsv
+          cmd_options: -a -I
+          allow_issue_writing: false
+          fail_action: true
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dast-reports
+          path: |
+            docs/security/reports
+            report_html.html
+          retention-days: 90
+
+  gate:
+    name: Gate de liberação
+    if: always()
+    needs: [quality, e2e, security, dast]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bloquear se qualquer etapa obrigatória falhou ou não rodou
+        run: |
+          echo "quality=${{ needs.quality.result }} e2e=${{ needs.e2e.result }} security=${{ needs.security.result }} dast=${{ needs.dast.result }}"
+          for r in "${{ needs.quality.result }}" "${{ needs.e2e.result }}" "${{ needs.security.result }}" "${{ needs.dast.result }}"; do
+            if [ "$r" != "success" ]; then echo "::error::BLOQUEADO — etapa obrigatória com resultado '$r'"; exit 1; fi
+          done
+          echo "APROVADO — todos os gates obrigatórios passaram."

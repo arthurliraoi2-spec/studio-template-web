@@ -1,0 +1,47 @@
+rules:
+  - id: studio-supabase-service-role-in-client
+    message: Chave service_role/segredo usado em componente de cliente. Use apenas no servidor.
+    severity: ERROR
+    languages: [typescript, javascript]
+    patterns:
+      - pattern-inside: |
+          "use client";
+          ...
+      - pattern-either:
+          - pattern: process.env.SUPABASE_SERVICE_ROLE_KEY
+          - pattern-regex: service_role
+
+  - id: studio-next-public-secret
+    message: Variável NEXT_PUBLIC_ é enviada ao navegador; não use para segredos.
+    severity: ERROR
+    languages: [typescript, javascript]
+    pattern-regex: process\.env\.NEXT_PUBLIC_[A-Z0-9_]*(SECRET|PRIVATE|SERVICE_ROLE|PASSWORD|TOKEN)
+
+  - id: studio-dangerously-set-inner-html
+    message: dangerouslySetInnerHTML sem sanitização explícita. Sanitize (ex. DOMPurify) ou evite.
+    severity: ERROR
+    languages: [typescript, javascript]
+    patterns:
+      - pattern: |
+          <$EL dangerouslySetInnerHTML={{__html: $X}} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(...)}} />
+
+  - id: studio-open-redirect
+    message: Redirecionamento com valor vindo da requisição. Valide contra lista de destinos permitidos.
+    severity: ERROR
+    languages: [typescript, javascript]
+    patterns:
+      - pattern-either:
+          - pattern: redirect($REQ.nextUrl.searchParams.get(...))
+          - pattern: NextResponse.redirect(new URL($REQ.nextUrl.searchParams.get(...), ...))
+          - pattern: Response.redirect($REQ.nextUrl.searchParams.get(...))
+
+  - id: studio-console-log-sensitive
+    message: Possível log de dado sensível (senha, token, e-mail, corpo da requisição).
+    severity: WARNING
+    languages: [typescript, javascript]
+    pattern-either:
+      - pattern: console.$F(..., $X.password, ...)
+      - pattern: console.$F(..., $X.token, ...)
+      - pattern: console.$F(..., await $REQ.json(), ...)

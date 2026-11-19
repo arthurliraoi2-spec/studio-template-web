@@ -1,0 +1,35 @@
+{
+  "kind": "security",
+  "status": "BLOQUEADO",
+  "env": "local",
+  "at": "2026-11-19T19:24:38.519Z",
+  "checks": [
+    {
+      "name": "Dependências (npm audit)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s)"
+    },
+    {
+      "name": "Dependências (OSV-Scanner)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s)"
+    },
+    {
+      "name": "SAST (Semgrep)",
+      "status": "REPROVADO",
+      "detail": "erro de execução: [00.06][ERROR]: executing pysemgrep failed: run \"pysemgrep\" \"scan\" \"--config\" \"p/owasp-top-ten\" \"--config\" \"p/typescript\" \"--config\" \"p/javascript\" \"--config\" \"p/react\" \"--config\" \"p/nextjs\" \"--config\" \".semgrep/rules.yml\" \"--metrics=off\" \"--quiet\" \"--json\" \"src\": No such file or directory\r\n"
+    },
+    {
+      "name": "Segredos (gitleaks)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s) — diretório (sem git)"
+    },
+    {
+      "name": "Supabase / chaves no cliente",
+      "status": "APROVADO",
+      "detail": "0 migração(ões), 8 arquivo(s) de código, 0 problema(s) — projeto sem Supabase (só checagem de chaves no cliente)"
+    }
+  ],
+  "findings": [],
+  "notes": []
+}

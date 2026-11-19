@@ -1,0 +1,5 @@
+#!/bin/sh
+# Antes de cada push: verificação rápida (formatação, lint, tipos, unitários).
+# O pipeline completo roda no CI e em `npm run verify` antes da entrega.
+set -e
+npm run --silent verify:quick

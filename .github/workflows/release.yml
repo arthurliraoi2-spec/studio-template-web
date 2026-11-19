@@ -1,0 +1,27 @@
+# Preparação de liberação. NÃO faz deploy: roda o pipeline completo e para no
+# ambiente "production", que deve exigir aprovação humana (Settings → Environments
+# → production → Required reviewers). O passo de deploy é adicionado por projeto,
+# somente depois de autorizado pelo responsável.
+name: Liberação — gates e aprovação
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  pipeline:
+    uses: ./.github/workflows/ci.yml
+
+  approval:
+    name: Aprovação humana para produção
+    needs: pipeline
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: echo "Gates aprovados e liberação autorizada por revisor do ambiente production."
+      # - name: Deploy
+      #   run: <comando de deploy do projeto — adicionar somente com autorização>

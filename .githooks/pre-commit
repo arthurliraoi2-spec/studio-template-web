@@ -1,0 +1,6 @@
+#!/bin/sh
+# Verificação rápida antes de cada commit: segredos nos arquivos staged, formatação e lint.
+set -e
+node scripts/precommit-secrets.mjs
+npm run --silent format:check
+npm run --silent lint

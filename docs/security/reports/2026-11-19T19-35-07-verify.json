@@ -1,0 +1,50 @@
+{
+  "kind": "verify",
+  "status": "APROVADO",
+  "env": "local",
+  "at": "2026-11-19T19:35:07.130Z",
+  "checks": [
+    {
+      "name": "Formatação (Prettier)",
+      "status": "APROVADO",
+      "detail": "1.3s"
+    },
+    {
+      "name": "Lint (ESLint + security)",
+      "status": "APROVADO",
+      "detail": "4.7s"
+    },
+    {
+      "name": "Tipagem (tsc)",
+      "status": "APROVADO",
+      "detail": "2.9s"
+    },
+    {
+      "name": "Testes unitários + cobertura",
+      "status": "APROVADO",
+      "detail": "1.5s"
+    },
+    {
+      "name": "Build de produção",
+      "status": "APROVADO",
+      "detail": "6.7s"
+    },
+    {
+      "name": "E2E + visual + acessibilidade (mobile/tablet/desktop)",
+      "status": "APROVADO",
+      "detail": "10.3s"
+    },
+    {
+      "name": "Gate de segurança (deps, SAST, segredos, Supabase)",
+      "status": "APROVADO",
+      "detail": "10.6s"
+    },
+    {
+      "name": "DAST local (servidor de produção em 127.0.0.1)",
+      "status": "APROVADO",
+      "detail": "1.2s"
+    }
+  ],
+  "findings": [],
+  "notes": []
+}

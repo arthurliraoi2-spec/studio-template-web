@@ -1,0 +1,50 @@
+{
+  "kind": "verify",
+  "status": "BLOQUEADO",
+  "env": "local",
+  "at": "2026-11-19T19:34:01.684Z",
+  "checks": [
+    {
+      "name": "Formatação (Prettier)",
+      "status": "APROVADO",
+      "detail": "1.3s"
+    },
+    {
+      "name": "Lint (ESLint + security)",
+      "status": "APROVADO",
+      "detail": "4.7s"
+    },
+    {
+      "name": "Tipagem (tsc)",
+      "status": "APROVADO",
+      "detail": "2.9s"
+    },
+    {
+      "name": "Testes unitários + cobertura",
+      "status": "APROVADO",
+      "detail": "1.5s"
+    },
+    {
+      "name": "Build de produção",
+      "status": "APROVADO",
+      "detail": "6.8s"
+    },
+    {
+      "name": "E2E + visual + acessibilidade (mobile/tablet/desktop)",
+      "status": "APROVADO",
+      "detail": "10.4s"
+    },
+    {
+      "name": "Gate de segurança (deps, SAST, segredos, Supabase)",
+      "status": "REPROVADO",
+      "detail": "10.9s"
+    },
+    {
+      "name": "DAST local (servidor de produção em 127.0.0.1)",
+      "status": "NÃO EXECUTADO",
+      "detail": "interrompido por falha anterior"
+    }
+  ],
+  "findings": [],
+  "notes": []
+}

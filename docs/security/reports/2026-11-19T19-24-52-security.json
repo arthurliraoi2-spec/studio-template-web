@@ -1,0 +1,17 @@
+{
+  "kind": "security",
+  "status": "APROVADO",
+  "env": "local",
+  "at": "2026-11-19T19:24:52.206Z",
+  "checks": [
+    {
+      "name": "SAST (Semgrep)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s) — regras: p/owasp-top-ten, p/typescript, p/javascript, p/react, p/nextjs, .semgrep/rules.yml"
+    }
+  ],
+  "findings": [],
+  "notes": [
+    "Semgrep reportou 2 erro(s) de análise: Invalid YAML file .semgrep\\rules.yml:\n\tmapping values are not allowed here\n\t  in \"<file>\", line 25, column 55"
+  ]
+}

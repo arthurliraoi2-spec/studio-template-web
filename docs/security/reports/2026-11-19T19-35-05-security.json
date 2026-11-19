@@ -1,0 +1,35 @@
+{
+  "kind": "security",
+  "status": "APROVADO",
+  "env": "local",
+  "at": "2026-11-19T19:35:05.849Z",
+  "checks": [
+    {
+      "name": "Dependências (npm audit)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s)"
+    },
+    {
+      "name": "Dependências (OSV-Scanner)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s)"
+    },
+    {
+      "name": "SAST (Semgrep)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s) — 9 arquivo(s); regras: p/owasp-top-ten, p/typescript, p/javascript, p/react, p/nextjs, .semgrep/rules.yml"
+    },
+    {
+      "name": "Segredos (gitleaks)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s) — diretório (sem git)"
+    },
+    {
+      "name": "Supabase / chaves no cliente",
+      "status": "APROVADO",
+      "detail": "0 migração(ões), 8 arquivo(s) de código, 0 problema(s) — projeto sem Supabase (só checagem de chaves no cliente)"
+    }
+  ],
+  "findings": [],
+  "notes": []
+}

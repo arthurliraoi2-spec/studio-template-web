@@ -1,0 +1,14 @@
+# Verificação periódica de dependências e segredos (novas CVEs surgem sem mudança de código).
+name: Segurança — verificação semanal
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # segundas, 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    uses: ./.github/workflows/ci.yml

@@ -1,0 +1,152 @@
+{
+  "kind": "dast",
+  "status": "APROVADO",
+  "env": "local",
+  "at": "2026-11-19T19:35:07.017Z",
+  "checks": [
+    {
+      "name": "Página inicial responde",
+      "status": "APROVADO",
+      "detail": "HTTP 200"
+    },
+    {
+      "name": "Cabeçalho content-security-policy",
+      "status": "APROVADO",
+      "detail": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-"
+    },
+    {
+      "name": "Cabeçalho x-content-type-options",
+      "status": "APROVADO",
+      "detail": "nosniff"
+    },
+    {
+      "name": "Cabeçalho x-frame-options",
+      "status": "APROVADO",
+      "detail": "DENY"
+    },
+    {
+      "name": "Cabeçalho referrer-policy",
+      "status": "APROVADO",
+      "detail": "strict-origin-when-cross-origin"
+    },
+    {
+      "name": "Cabeçalho strict-transport-security",
+      "status": "APROVADO",
+      "detail": "max-age=63072000; includeSubDomains; preload"
+    },
+    {
+      "name": "Cabeçalho permissions-policy",
+      "status": "APROVADO",
+      "detail": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+    },
+    {
+      "name": "CSP sem curinga em script-src",
+      "status": "APROVADO",
+      "detail": ""
+    },
+    {
+      "name": "CSP com frame-ancestors 'none'",
+      "status": "APROVADO",
+      "detail": ""
+    },
+    {
+      "name": "Sem X-Powered-By",
+      "status": "APROVADO",
+      "detail": ""
+    },
+    {
+      "name": "Sem exposição de /.env",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /.env.local",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /.git/config",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /package.json",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /next.config.ts",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /.next/server/app/page.js",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /api/../.env",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "Sem exposição de /%2e%2e/.env",
+      "status": "APROVADO",
+      "detail": "HTTP 404"
+    },
+    {
+      "name": "CORS não reflete origem arbitrária",
+      "status": "APROVADO",
+      "detail": "sem ACAO"
+    },
+    {
+      "name": "Método não permitido (GET /api/contact)",
+      "status": "APROVADO",
+      "detail": "HTTP 405"
+    },
+    {
+      "name": "Content-Type inválido recusado",
+      "status": "APROVADO",
+      "detail": "HTTP 415"
+    },
+    {
+      "name": "JSON malformado recusado",
+      "status": "APROVADO",
+      "detail": "HTTP 400"
+    },
+    {
+      "name": "Payload grande recusado",
+      "status": "APROVADO",
+      "detail": "HTTP 413"
+    },
+    {
+      "name": "Campo extra (mass assignment) recusado",
+      "status": "APROVADO",
+      "detail": "HTTP 422"
+    },
+    {
+      "name": "Entrada com script não é refletida",
+      "status": "APROVADO",
+      "detail": "HTTP 202"
+    },
+    {
+      "name": "POST de origem cruzada recusado (CSRF)",
+      "status": "APROVADO",
+      "detail": "HTTP 403"
+    },
+    {
+      "name": "Erros sem stack trace",
+      "status": "APROVADO",
+      "detail": ""
+    },
+    {
+      "name": "Rate limit aplicado em /api/contact",
+      "status": "APROVADO",
+      "detail": "429 recebido"
+    }
+  ],
+  "findings": [],
+  "notes": [
+    "Alvo: http://127.0.0.1:3200 (escopo local)"
+  ]
+}

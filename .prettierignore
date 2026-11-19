@@ -1,0 +1,11 @@
+.next
+node_modules
+coverage
+playwright-report
+test-results
+tests/e2e/__screenshots__
+docs/security/reports
+docs/security/historico-auditorias.md
+.claude/.cache
+package-lock.json
+next-env.d.ts

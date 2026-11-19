@@ -1,0 +1,46 @@
+{
+  "kind": "security",
+  "status": "BLOQUEADO",
+  "env": "local",
+  "at": "2026-11-19T19:34:01.660Z",
+  "checks": [
+    {
+      "name": "Dependências (npm audit)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s)"
+    },
+    {
+      "name": "Dependências (OSV-Scanner)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s)"
+    },
+    {
+      "name": "SAST (Semgrep)",
+      "status": "APROVADO",
+      "detail": "0 bloqueante(s), 0 com exceção, 0 registrado(s) — 9 arquivo(s); regras: p/owasp-top-ten, p/typescript, p/javascript, p/react, p/nextjs, .semgrep/rules.yml"
+    },
+    {
+      "name": "Segredos (gitleaks)",
+      "status": "REPROVADO",
+      "detail": "1 bloqueante(s), 0 com exceção, 0 registrado(s) — diretório (sem git)"
+    },
+    {
+      "name": "Supabase / chaves no cliente",
+      "status": "APROVADO",
+      "detail": "0 migração(ões), 8 arquivo(s) de código, 0 problema(s) — projeto sem Supabase (só checagem de chaves no cliente)"
+    }
+  ],
+  "findings": [
+    {
+      "tool": "gitleaks",
+      "id": "generic-api-key",
+      "package": "tests/supabase/rls.test.ts:105",
+      "severity": "critical",
+      "title": "Detected a Generic API Key, potentially exposing access to various services and sensitive operations.",
+      "fingerprint": "tests/supabase/rls.test.ts:generic-api-key:105",
+      "url": "",
+      "state": "BLOQUEIA"
+    }
+  ],
+  "notes": []
+}
